@@ -9,12 +9,10 @@ A responsive, single-page analytics dashboard that displays ad campaign performa
   - KPI tiles: Clicks, Spend, CTR
   - Campaign performance table with sortable rows
 - Built using **mock JSON data** with no external API dependencies
-- Fully responsive layout using plain CSS
 
 ## Tech Stack
 - React
 - TypeScript
-- Plain CSS (no Tailwind or UI libraries)
 
 ## Getting Started
 
