@@ -1,4 +1,4 @@
-# AdMetrics Dashboard (UI)
+# Ad Campaign Dashboard (UI)
 
 A responsive, single-page analytics dashboard that displays ad campaign performance using mock data. Built with **React** and **TypeScript**, this UI showcases component design, layout structuring, and data visualization for a marketing or ad-tech context.
 
