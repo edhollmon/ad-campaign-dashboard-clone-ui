@@ -10,6 +10,7 @@ export default function Dashboard() {
     start: "",
     end: "",
   });
+  const [sortConfig, setSortConfig] = useState<{ key: keyof CampaignData; direction: "asc" | "desc" } | null>(null);
 
   useEffect(() => {
     const mockData = fetchMockData();
@@ -35,6 +36,29 @@ export default function Dashboard() {
     }
 
     setFilteredData(filtered);
+  };
+
+  const handleSort = (key: keyof CampaignData) => {
+    let direction: "asc" | "desc" = "asc";
+    if (sortConfig && sortConfig.key === key && sortConfig.direction === "asc") {
+      direction = "desc";
+    }
+    setSortConfig({ key, direction });
+
+    const sortedData = [...filteredData].sort((a, b) => {
+      if (a[key] < b[key]) return direction === "asc" ? -1 : 1;
+      if (a[key] > b[key]) return direction === "asc" ? 1 : -1;
+      return 0;
+    });
+
+    setFilteredData(sortedData);
+  };
+
+  const getSortIndicator = (key: keyof CampaignData) => {
+    if (sortConfig?.key === key) {
+      return sortConfig.direction === "asc" ? "▲" : "▼";
+    }
+    return "⇅";
   };
 
   const totalClicks = filteredData.reduce((sum, item) => sum + item.clicks, 0);
@@ -95,10 +119,30 @@ export default function Dashboard() {
       <table style={{ marginTop: "16px", width: "100%", borderCollapse: "collapse" }}>
         <thead>
           <tr>
-            <th style={{ border: "1px solid #ccc", padding: "8px" }}>Campaign Name</th>
-            <th style={{ border: "1px solid #ccc", padding: "8px" }}>Date</th>
-            <th style={{ border: "1px solid #ccc", padding: "8px" }}>Clicks</th>
-            <th style={{ border: "1px solid #ccc", padding: "8px" }}>Spend</th>
+            <th
+              style={{ border: "1px solid #ccc", padding: "8px", cursor: "pointer" }}
+              onClick={() => handleSort("campaignName")}
+            >
+              Campaign Name {getSortIndicator("campaignName")}
+            </th>
+            <th
+              style={{ border: "1px solid #ccc", padding: "8px", cursor: "pointer" }}
+              onClick={() => handleSort("date")}
+            >
+              Date {getSortIndicator("date")}
+            </th>
+            <th
+              style={{ border: "1px solid #ccc", padding: "8px", cursor: "pointer" }}
+              onClick={() => handleSort("clicks")}
+            >
+              Clicks {getSortIndicator("clicks")}
+            </th>
+            <th
+              style={{ border: "1px solid #ccc", padding: "8px", cursor: "pointer" }}
+              onClick={() => handleSort("spend")}
+            >
+              Spend {getSortIndicator("spend")}
+            </th>
           </tr>
         </thead>
         <tbody>
