@@ -7,7 +7,7 @@ A responsive, single-page analytics dashboard that displays ad campaign performa
   - Date range selector
   - Campaign dropdown filter
   - KPI tiles: Clicks, Spend, CTR
-  - Campaign performance tables
+  - Campaign performance table with sortable rows
 - Built using **mock JSON data** with no external API dependencies
 - Fully responsive layout using plain CSS
 
