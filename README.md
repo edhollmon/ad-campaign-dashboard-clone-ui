@@ -11,6 +11,9 @@ A responsive, single-page analytics dashboard that displays ad campaign performa
   - Line chart of Clicks and Spend over time
 - Built using **mock JSON data** with no external API dependencies
 
+## Preview
+![AdMetrics Dashboard Preview](./public/screenshot.png)
+
 ## Tech Stack
 - React
 - TypeScript
