@@ -8,11 +8,13 @@ A responsive, single-page analytics dashboard that displays ad campaign performa
   - Campaign dropdown filter
   - KPI tiles: Clicks, Spend, CTR
   - Campaign performance table with sortable rows
+  - Line chart of Clicks and Spend over time
 - Built using **mock JSON data** with no external API dependencies
 
 ## Tech Stack
 - React
 - TypeScript
+- Chart.js
 
 ## Getting Started
 

@@ -1,7 +1,28 @@
 'use client'
 import { useState, useEffect } from "react";
 import { fetchMockData, CampaignData } from "../utils/CampaignDataClient";
+import { Line } from "react-chartjs-2";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
 import "./Dashboard.css";
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 export default function Dashboard() {
   const [data, setData] = useState<CampaignData[]>([]);
@@ -66,6 +87,39 @@ export default function Dashboard() {
   const totalSpend = filteredData.reduce((sum, item) => sum + item.spend, 0);
   const ctr = totalClicks > 0 ? ((totalClicks / totalSpend) * 100).toFixed(2) : "0";
 
+  const chartData = {
+    labels: filteredData.map((item) => item.date),
+    datasets: [
+      {
+        label: "Clicks",
+        data: filteredData.map((item) => item.clicks),
+        borderColor: "rgba(75, 192, 192, 1)",
+        backgroundColor: "rgba(75, 192, 192, 0.2)",
+        tension: 0.4,
+      },
+      {
+        label: "Spend",
+        data: filteredData.map((item) => item.spend),
+        borderColor: "rgba(255, 99, 132, 1)",
+        backgroundColor: "rgba(255, 99, 132, 0.2)",
+        tension: 0.4,
+      },
+    ],
+  };
+
+  const chartOptions = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: "top" as const,
+      },
+      title: {
+        display: true,
+        text: "Clicks and Spend Over Time",
+      },
+    },
+  };
+
   return (
     <div className="dashboard">
       <h1 className="dashboard-title">Ads Dashboard</h1>
@@ -117,6 +171,10 @@ export default function Dashboard() {
           <h3>CTR</h3>
           <p>{ctr}%</p>
         </div>
+      </div>
+
+      <div className="chart-container">
+        <Line data={chartData} options={chartOptions} />
       </div>
 
       <table className="performance-table">
