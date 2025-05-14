@@ -1,6 +1,7 @@
 'use client'
 import { useState, useEffect } from "react";
 import { fetchMockData, CampaignData } from "../utils/CampaignDataClient";
+import "./Dashboard.css";
 
 export default function Dashboard() {
   const [data, setData] = useState<CampaignData[]>([]);
@@ -66,10 +67,10 @@ export default function Dashboard() {
   const ctr = totalClicks > 0 ? ((totalClicks / totalSpend) * 100).toFixed(2) : "0";
 
   return (
-    <div>
-      <div>
-        <label>
-          Date Range:
+    <div className="dashboard">
+      <h1 className="dashboard-title">Ads Dashboard</h1>
+      <div className="filters">
+        <div className="date-range">
           <input
             type="date"
             value={dateRange.start}
@@ -77,6 +78,7 @@ export default function Dashboard() {
               setDateRange((prev) => ({ ...prev, start: e.target.value }))
             }
           />
+          <span>–</span>
           <input
             type="date"
             value={dateRange.end}
@@ -84,63 +86,52 @@ export default function Dashboard() {
               setDateRange((prev) => ({ ...prev, end: e.target.value }))
             }
           />
-        </label>
-        <label>
-          Campaign:
-          <select
-            value={selectedCampaign}
-            onChange={(e) => setSelectedCampaign(e.target.value)}
-          >
-            <option value="all">All Campaigns</option>
-            {data.map((campaign) => (
-              <option key={campaign.campaignId} value={campaign.campaignId}>
-                {campaign.campaignName}
-              </option>
-            ))}
-          </select>
-        </label>
-        <button onClick={handleFilter}>Apply Filters</button>
+        </div>
+        <select
+          className="campaign-select"
+          value={selectedCampaign}
+          onChange={(e) => setSelectedCampaign(e.target.value)}
+        >
+          <option value="all">Campaign</option>
+          {data.map((campaign) => (
+            <option key={campaign.campaignId} value={campaign.campaignId}>
+              {campaign.campaignName}
+            </option>
+          ))}
+        </select>
+        <button className="apply-filters" onClick={handleFilter}>
+          Apply Filters
+        </button>
       </div>
 
-      <div style={{ display: "flex", gap: "16px", marginTop: "16px" }}>
-        <div>
-          <h3>Total Clicks</h3>
-          <p>{totalClicks}</p>
+      <div className="summary">
+        <div className="summary-tile">
+          <h3>Clicks</h3>
+          <p>{totalClicks.toLocaleString()} K</p>
         </div>
-        <div>
-          <h3>Total Spend</h3>
-          <p>${totalSpend.toFixed(2)}</p>
+        <div className="summary-tile">
+          <h3>Spend</h3>
+          <p>${totalSpend.toLocaleString()}</p>
         </div>
-        <div>
+        <div className="summary-tile">
           <h3>CTR</h3>
           <p>{ctr}%</p>
         </div>
       </div>
-      <table style={{ marginTop: "16px", width: "100%", borderCollapse: "collapse" }}>
+
+      <table className="performance-table">
         <thead>
           <tr>
-            <th
-              style={{ border: "1px solid #ccc", padding: "8px", cursor: "pointer" }}
-              onClick={() => handleSort("campaignName")}
-            >
-              Campaign Name {getSortIndicator("campaignName")}
+            <th onClick={() => handleSort("campaignName")}>
+              Campaign {getSortIndicator("campaignName")}
             </th>
-            <th
-              style={{ border: "1px solid #ccc", padding: "8px", cursor: "pointer" }}
-              onClick={() => handleSort("date")}
-            >
+            <th onClick={() => handleSort("date")}>
               Date {getSortIndicator("date")}
             </th>
-            <th
-              style={{ border: "1px solid #ccc", padding: "8px", cursor: "pointer" }}
-              onClick={() => handleSort("clicks")}
-            >
+            <th onClick={() => handleSort("clicks")}>
               Clicks {getSortIndicator("clicks")}
             </th>
-            <th
-              style={{ border: "1px solid #ccc", padding: "8px", cursor: "pointer" }}
-              onClick={() => handleSort("spend")}
-            >
+            <th onClick={() => handleSort("spend")}>
               Spend {getSortIndicator("spend")}
             </th>
           </tr>
@@ -148,18 +139,10 @@ export default function Dashboard() {
         <tbody>
           {filteredData.map((item) => (
             <tr key={item.campaignId}>
-              <td style={{ border: "1px solid #ccc", padding: "8px" }}>
-                {item.campaignName}
-              </td>
-              <td style={{ border: "1px solid #ccc", padding: "8px" }}>
-                {item.date}
-              </td>
-              <td style={{ border: "1px solid #ccc", padding: "8px" }}>
-                {item.clicks}
-              </td>
-              <td style={{ border: "1px solid #ccc", padding: "8px" }}>
-                ${item.spend.toFixed(2)}
-              </td>
+              <td>{item.campaignName}</td>
+              <td>{item.date}</td>
+              <td>{item.clicks.toLocaleString()}</td>
+              <td>${item.spend.toLocaleString()}</td>
             </tr>
           ))}
         </tbody>
